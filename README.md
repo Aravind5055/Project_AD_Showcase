@@ -9,11 +9,17 @@ process window.
 
 ## Interactive website interface
 
-The Streamlit interface exposes editable package inputs in the sidebar and nine
-analysis tabs for package architecture, thermal response, mechanical proxy,
-manufacturing risk, DOE, statistics, optimization, process-window evaluation
-and exports. Changes are evaluated in memory and do not overwrite the saved
-baseline configuration.
+The Streamlit interface exposes editable package inputs in the sidebar and
+twelve analysis tabs for package architecture, thermal response, mechanical
+proxy, manufacturing risk, DOE, statistics, optimization, process-window
+evaluation, calibration, uncertainty, governance and exports. Changes are
+evaluated in memory and do not overwrite the saved baseline configuration.
+
+The current private application also supports versioned development rule decks,
+an optional effective multilayer thermal stack, paired measured/FEA calibration,
+seeded Monte Carlo tolerance studies, named scenario comparison, checksummed run
+records and standalone HTML reports. These additions improve traceability; they
+do not turn the reduced-order model into qualification evidence.
 
 <img width="1280" height="720" alt="Live Streamlit interface showing editable package inputs, analysis tabs and labeled 3D package view" src="https://github.com/user-attachments/assets/0ecc94d6-a506-423e-9f5f-4d1dcca3f708" />
 
