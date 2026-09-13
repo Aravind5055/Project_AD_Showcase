@@ -1,83 +1,70 @@
-# 2.5D Chiplet Package Process Window Showcase
+# Advanced Packaging Engineering Project Showcase
 
-This repository presents selected visual results from a Python-based,
-reduced-order engineering study of a representative 2.5D chiplet package. The
-private development project connects chiplet placement, thermal response, a
-thermo-mechanical screening proxy, manufacturing-risk indicators, design of
-experiments, statistical diagnostics, Pareto tradeoffs and a multi-constraint
-process window.
+This repository presents two explainable engineering projects developed to support an R&D transition from legacy semiconductor packaging toward advanced packaging integration. The public material shows the engineering questions, methods, selected results, and model limitations without publishing the private implementation, raw data, supplier records, or detailed technical reports.
 
-## Interactive website interface
+| Project | Engineering purpose | Public artifact |
+|---|---|---|
+| 2.5D Chiplet Process Window | Screen early package-design choices across thermal, thermo-mechanical, layout, and manufacturing constraints | Selected figures and [portfolio poster](portfolio/Chiplet_Process_Window_Poster.pdf) |
+| Molding Compound Selection Workbench | Compare EMC and molded-underfill candidates using datasheet evidence, package requirements, hard gates, mold trials, and reliability evidence | High-level methodology and [interactive demonstration](https://package-materials-workbench.aravin397.chatgpt.site/) |
 
-The Streamlit interface exposes editable package inputs in the sidebar and
-twelve analysis tabs for package architecture, thermal response, mechanical
-proxy, manufacturing risk, DOE, statistics, optimization, process-window
-evaluation, calibration, uncertainty, governance and exports. Changes are
-evaluated in memory and do not overwrite the saved baseline configuration.
+## Project 1 — 2.5D Chiplet Package Process Window
 
-The current private application also supports versioned development rule decks,
-an optional effective multilayer thermal stack, paired measured/FEA calibration,
-seeded Monte Carlo tolerance studies, named scenario comparison, checksummed run
-records and standalone HTML reports. These additions improve traceability; they
-do not turn the reduced-order model into qualification evidence.
+This Python-based reduced-order study connects chiplet placement, thermal response, a thermo-mechanical screening proxy, manufacturing-risk indicators, design of experiments, statistical diagnostics, Pareto tradeoffs, and a multi-constraint process window.
 
-<img width="1280" height="720" alt="Live Streamlit interface showing editable package inputs, analysis tabs and labeled 3D package view" src="https://github.com/user-attachments/assets/0ecc94d6-a506-423e-9f5f-4d1dcca3f708" />
+The first-order design levers are chiplet placement scale, thermal-interface-material conductivity, silicon-interposer thickness, total chiplet power scale, and microbump pitch. They represent geometry, thermal performance, mechanical and handling sensitivity, operating load, and interconnect density.
 
 ![Representative package architecture](assets/package_architecture.png)
 
-## Engineering question
-
-How can early package-design choices be screened transparently before detailed
-finite-element analysis, supplier design-rule checks and physical
-qualification?
-
-The study explores five first-order levers:
-
-- Chiplet placement scale
-- Thermal-interface-material conductivity
-- Silicon-interposer thickness
-- Total chiplet power scale
-- Microbump pitch
-
-The parameters were selected because they represent geometry, thermal
-performance, mechanical/handling sensitivity, operating load and interconnect
-density. The framework deliberately limits the first model to explainable
-variables connected to implemented responses.
-
-## Selected results
-
-The representative baseline contains six chiplets on a silicon interposer and
-organic substrate. The current screening model reports a 60.16 degC peak
-temperature, 2.936 MPa maximum stress proxy, 0.189 maximum comparative
-manufacturing-risk score and 215 weighted-mm routing metric.
+The representative baseline contains six chiplets on a silicon interposer and organic substrate. It reports a 60.16 °C peak temperature, 2.936 MPa maximum stress proxy, 0.189 maximum comparative manufacturing-risk score, and 215 weighted-mm routing metric.
 
 ![Process-window map](assets/process_window.png)
 
-The illustrated 441-point process-window study classifies 172 points as
-acceptable, 206 as high risk and 63 as invalid geometry under the project's
-illustrative constraints.
+The illustrated 441-point study classifies 172 points as acceptable, 206 as high risk, and 63 as invalid geometry under the project’s illustrative constraints.
 
 ![Pareto trade space](assets/pareto_trade_space.png)
 
-## Claim boundary
+## Project 2 — Molding Compound Selection Workbench
 
-This is an educational, reduced-order comparative study. It is not thermal or
-structural FEA, detailed routing, production-yield prediction, a foundry or
-OSAT process design kit, or qualification evidence. Production use requires
-technology-specific rules, calibrated material data, measured process
-distributions, detailed multiphysics analysis and physical test-vehicle
-correlation.
+This browser-based decision-support tool structures EMC and molded-underfill selection for legacy and advanced packages. It uses user-entered package requirements, supplier datasheet properties, evidence completeness, mold-trial observations, and reliability results. All limits remain editable because acceptable behavior depends on package architecture, materials, geometry, tooling, and process conditions.
 
-## Public contents
+Selection follows noncompensatory stage gates:
 
-- Three selected engineering figures
-- One-page portfolio poster
-- This high-level project summary
-- Copyright and usage notice
+- **G1 — Identity and compliance:** exact grade, supplier, revision, intended application, regulatory status, and traceable source.
+- **G2 — Material-property evidence:** relevant filler, cure, rheology, thermal, mechanical, moisture, adhesion, ionic, electrical, storage, and processing information.
+- **G3 — Package mold trial:** every defined criterion must pass, including applicable flow, fill, wire sweep, void, flash, bleed, short-shot, surface, dimension, and post-mold-cure responses.
+- **G4 — Interface and reliability evidence:** applicable preconditioning, moisture sensitivity, reflow, delamination inspection, temperature cycling, high-temperature storage, biased humidity, and package-specific tests.
 
-The implementation source, editable configuration, raw result tables, detailed
-report and private collaboration history are intentionally not published.
+For an upper-limit observation `y_rj` and limit `L_j`, the normalized trial margin is:
+
+```text
+m_rj = (L_j - y_rj) / max(|L_j|, 1)
+```
+
+Passing-run yield and worst passing margin are:
+
+```text
+Y = N_pass / N_evaluated
+m_worst = min(m_rj) across all passing observations
+```
+
+Candidates are ordered first by gate-based disposition, then by passing-run yield, worst passing margin, and represented sample count. A strong thermal property cannot compensate for a failed mandatory reliability or moldability gate. Missing information remains **Not Tested** rather than being converted into an optimistic score.
+
+Useful physics relationships guide screening and DOE priorities:
+
+```text
+Filler-to-gap ratio:  phi = D_max / g_min
+Modulus retention:    r_E = E_hot / E_25
+CTE mismatch strain:  epsilon_th = (alpha_EMC - alpha_adjacent) delta_T
+Wire-sweep tendency:  deflection proportional to F_drag L_wire^3 / (E_wire I)
+Thermal diffusivity:  a = k / (rho c_p)
+```
+
+The model does not claim to predict absolute warpage, delamination probability, MSL level, void size, or wire sweep from a datasheet alone. Those outcomes require package geometry, adjacent-material properties, interface condition, process history, and physical evidence. The tool supports transparent shortlisting and trial planning; it does not replace qualification.
+
+## Public/private boundary
+
+This public repository contains selected figures, a portfolio poster, a high-level methodology, and links to the demonstration. The source code, detailed equations and derivations, editable configurations, raw result tables, supplier records, full technical reports, and private collaboration history remain in the private development repository.
 
 ## Author
 
-Project maintained by [Aravind5055](https://github.com/Aravind5055).
+Developed and maintained by [Aravind5055](https://github.com/Aravind5055). See [NOTICE.md](NOTICE.md) for usage terms.
